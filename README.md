@@ -45,8 +45,8 @@
 1. 克隆代碼庫
 
 ```bash
-git clone <repository-url>
-cd WhatEatApp/WebApp
+git clone https://github.com/junming0106/WhatEatApp.git
+cd WhatEatApp
 ```
 
 2. **使用啟動腳本 (推薦)**

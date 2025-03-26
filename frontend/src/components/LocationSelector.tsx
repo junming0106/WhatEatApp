@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaMapMarkerAlt, FaCrosshairs } from "react-icons/fa";
 
 interface LocationSelectorProps {
@@ -25,6 +25,24 @@ const LocationSelector = ({
   onGetCurrentLocation,
 }: LocationSelectorProps) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // 處理點擊外部關閉下拉菜單
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleSelectLocation = (loc: {
     name: string;
@@ -40,7 +58,7 @@ const LocationSelector = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <div
         className="flex items-center cursor-pointer"
         onClick={() => setShowDropdown(!showDropdown)}>
@@ -58,7 +76,7 @@ const LocationSelector = ({
               }}
               className="w-full flex items-center p-3 text-left hover:bg-gray-100 rounded-lg">
               <FaCrosshairs className="mr-2 text-gray-600" />
-              <span>使用當前位置</span>
+              <span className="text-gray-600">使用當前位置</span>
             </button>
 
             <div className="pt-2 mt-2 border-t border-gray-100">
@@ -67,7 +85,7 @@ const LocationSelector = ({
                 <button
                   key={loc.name}
                   onClick={() => handleSelectLocation(loc)}
-                  className="w-full p-3 text-left hover:bg-gray-100 rounded-lg">
+                  className="w-full p-3 text-left text-gray-600 hover:bg-gray-100 rounded-lg">
                   {loc.name}
                 </button>
               ))}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaArrowLeft, FaHeart, FaRegHeart, FaDirections } from "react-icons/fa";
+import RestaurantImage from "../components/RestaurantImage";
 
 interface RestaurantDetails {
   id: number;
@@ -65,23 +66,17 @@ const RestaurantDetailPage = () => {
         {
           name: "經典豚骨拉麵",
           price: "NT$ 180",
-          photoUrl: response.data.details.photos?.[0]?.photo_reference
-            ? `/api/restaurants/photo/${response.data.details.photos[0].photo_reference}?maxwidth=300`
-            : "https://via.placeholder.com/300x200",
+          photoUrl: response.data.details.photos?.[0]?.photo_reference || "",
         },
         {
           name: "辣味味噌拉麵",
           price: "NT$ 190",
-          photoUrl: response.data.details.photos?.[1]?.photo_reference
-            ? `/api/restaurants/photo/${response.data.details.photos[1].photo_reference}?maxwidth=300`
-            : "https://via.placeholder.com/300x200",
+          photoUrl: response.data.details.photos?.[1]?.photo_reference || "",
         },
         {
           name: "炸雞塊",
           price: "NT$ 120",
-          photoUrl: response.data.details.photos?.[2]?.photo_reference
-            ? `/api/restaurants/photo/${response.data.details.photos[2].photo_reference}?maxwidth=300`
-            : "https://via.placeholder.com/300x200",
+          photoUrl: response.data.details.photos?.[2]?.photo_reference || "",
         },
       ];
 
@@ -151,13 +146,18 @@ const RestaurantDetailPage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* 頂部區域 */}
-      <div
-        className="h-48 bg-cover bg-center relative"
-        style={{
-          backgroundImage: restaurant.photo_reference
-            ? `url(/api/restaurants/photo/${restaurant.photo_reference}?maxwidth=800)`
-            : "linear-gradient(120deg, #f87171 0%, #ef4444 100%)",
-        }}>
+      <div className="h-48 relative">
+        {restaurant.photo_reference ? (
+          <RestaurantImage
+            photoReference={restaurant.photo_reference}
+            restaurantName={restaurant.name}
+            maxWidth={800}
+            useRestaurantsAPI={true}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-r from-red-300 to-red-500"></div>
+        )}
         <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-between p-4">
           <div className="flex justify-between">
             <button
@@ -201,11 +201,19 @@ const RestaurantDetailPage = () => {
                 className="bg-white rounded-xl shadow overflow-hidden">
                 <div className="flex">
                   <div className="w-1/3 h-24 bg-gray-200">
-                    <img
-                      src={item.photoUrl}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                    />
+                    {item.photoUrl ? (
+                      <RestaurantImage
+                        photoReference={item.photoUrl}
+                        restaurantName={item.name}
+                        maxWidth={300}
+                        useRestaurantsAPI={true}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
+                        無圖片
+                      </div>
+                    )}
                   </div>
                   <div className="p-3 flex-1 flex flex-col justify-center">
                     <h3 className="font-medium">{item.name}</h3>

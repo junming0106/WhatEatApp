@@ -4,6 +4,9 @@ import axios from "axios";
 import "./index.css";
 import App from "./App.tsx";
 import API_URL from "./config/api.ts";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import theme from "./theme";
 
 // 設置 axios 默認基礎 URL
 axios.defaults.baseURL = API_URL;
@@ -36,6 +39,9 @@ axios.interceptors.response.use(
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
   </StrictMode>
 );

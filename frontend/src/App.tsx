@@ -13,6 +13,7 @@ import RestaurantDetailPage from "./pages/RestaurantDetailPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
+import PhotoTest from "./components/PhotoTest";
 
 // 導入上下文
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -41,6 +42,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/photo-test" element={<PhotoTest />} />
           <Route
             path="/"
             element={
